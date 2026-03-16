@@ -561,7 +561,9 @@ function renderLegend(container, data, total) {
     `)
     .join("");
 
-  container.innerHTML = legendMarkup.replace(/PRIMultinivell/gi, "PRIM");
+  container.innerHTML = legendMarkup
+    .replace(/PRIMultinivell/gi, "PRIM")
+    .replace(/INFMultinivell/gi, "INFM");
 }
 
 function renderPieChart(container, data, total, mode) {
@@ -571,9 +573,9 @@ function renderPieChart(container, data, total, mode) {
   }
 
   const width = mode === "pie" ? 500 : 520;
-  const height = mode === "pie" ? 420 : 420;
+  const height = mode === "pie" ? 460 : 420;
   const centerX = width / 2;
-  const centerY = mode === "pie" ? 190 : 208;
+  const centerY = mode === "pie" ? 224 : 208;
   const radius = mode === "donut" ? 176 : 144;
   const innerRadius = mode === "donut" ? 78 : 0;
 
@@ -1002,7 +1004,9 @@ function getDisplayLabel(label) {
 function normalizeLegendLabels(container) {
   container.querySelectorAll(".legend-name").forEach((node) => {
     const visibleText = String(node.textContent || "").trim();
-    node.textContent = /^prim/i.test(visibleText) ? "PRIM" : normalizeEducationLabel(visibleText);
+    node.textContent = /^(prim|infm)/i.test(visibleText)
+      ? normalizeEducationLabel(visibleText)
+      : normalizeEducationLabel(visibleText);
   });
 }
 
@@ -1010,8 +1014,10 @@ function normalizeVisibleLabels(root = document.body) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let node = walker.nextNode();
   while (node) {
-    if (node.nodeValue && /PRIMultinivell/i.test(node.nodeValue)) {
-      node.nodeValue = node.nodeValue.replace(/PRIMultinivell/gi, "PRIM");
+    if (node.nodeValue && /(PRIMultinivell|INFMultinivell)/i.test(node.nodeValue)) {
+      node.nodeValue = node.nodeValue
+        .replace(/PRIMultinivell/gi, "PRIM")
+        .replace(/INFMultinivell/gi, "INFM");
     }
     node = walker.nextNode();
   }
@@ -1022,8 +1028,10 @@ function installLabelNormalizer() {
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === Node.TEXT_NODE) {
-          if (/PRIMultinivell/i.test(node.nodeValue || "")) {
-            node.nodeValue = (node.nodeValue || "").replace(/PRIMultinivell/gi, "PRIM");
+          if (/(PRIMultinivell|INFMultinivell)/i.test(node.nodeValue || "")) {
+            node.nodeValue = (node.nodeValue || "")
+              .replace(/PRIMultinivell/gi, "PRIM")
+              .replace(/INFMultinivell/gi, "INFM");
           }
           return;
         }
@@ -1043,6 +1051,9 @@ function normalizeEducationLabel(label) {
   const normalizedLabel = normalize(rawLabel);
   if (normalizedLabel.includes("primultinivell") || normalizedLabel.startsWith("prim")) {
     return "PRIM";
+  }
+  if (normalizedLabel.includes("infmultinivell") || normalizedLabel.startsWith("infm")) {
+    return "INFM";
   }
   return rawLabel;
 }
