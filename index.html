@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Looker | Entregues Curs 25-26</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="title-block">
+        <p class="eyebrow">Quadre interactiu</p>
+        <h1>Entregues Curs 25-26</h1>
+      </div>
+      <div class="brand-strip" aria-label="Logotips">
+        <img src="REA_logo.png" alt="Logotip REA" class="brand-logo">
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <aside class="sidebar card">
+        <div class="sidebar-block">
+          <p class="sidebar-title">Filtres</p>
+          <label class="field">
+            <span>Temporada</span>
+            <select id="seasonFilter"></select>
+          </label>
+          <label class="field">
+            <span>Servei territorial</span>
+            <select id="territoryFilter"></select>
+          </label>
+          <button id="resetFilters" class="ghost-button" type="button">Reinicia els filtres</button>
+        </div>
+
+        <div class="metrics-stack">
+          <article class="mini-metric">
+            <span>Centres inscrits</span>
+            <strong id="registeredCenters">0</strong>
+          </article>
+          <article class="mini-metric">
+            <span>Centres participants</span>
+            <strong id="activeCenters">0</strong>
+          </article>
+          <article class="mini-metric">
+            <span>Entregues</span>
+            <strong id="deliveriesTotal">0</strong>
+          </article>
+        </div>
+
+        <section class="insight-box">
+          <p class="sidebar-title">Lectura r&agrave;pida</p>
+          <ul id="insightsList" class="insights-list"></ul>
+        </section>
+      </aside>
+
+      <section class="content-grid">
+        <div class="kpi-row">
+          <article class="metric-card card accent">
+            <span class="metric-label">Temporada activa</span>
+            <strong id="activeSeasonLabel">Totes</strong>
+            <small id="activeSeasonDeliveries">0 entregues</small>
+          </article>
+          <article class="metric-card card">
+            <span class="metric-label">Cobertura territorial</span>
+            <strong id="territoryCount">0</strong>
+            <small>serveis territorials</small>
+          </article>
+          <article class="metric-card card">
+            <span class="metric-label">Nivells detectats</span>
+            <strong id="levelCount">0</strong>
+            <small>nivells educatius</small>
+          </article>
+        </div>
+
+        <section class="chart-card card large">
+          <div class="card-head">
+            <div>
+              <p class="card-eyebrow">Distribuci&oacute;</p>
+              <h2>Nivell educatiu d'entregues</h2>
+            </div>
+          </div>
+          <div class="chart-layout">
+            <div id="educationChart" class="chart-surface chart-pie"></div>
+            <div id="educationLegend" class="legend-list"></div>
+          </div>
+        </section>
+
+        <section class="chart-card card">
+          <div class="card-head">
+            <div>
+              <p class="card-eyebrow">Temporades</p>
+              <h2>Comparativa d'entregues</h2>
+            </div>
+          </div>
+          <div id="seasonChart" class="chart-surface chart-donut"></div>
+        </section>
+
+        <section class="chart-card card wide">
+          <div class="card-head">
+            <div>
+              <p class="card-eyebrow">Material</p>
+              <h2 class="materials-title">Robots i plaques utilitzades</h2>
+            </div>
+          </div>
+          <div id="toolsChart" class="chart-surface chart-bars"></div>
+        </section>
+
+        <section class="chart-card card full-span">
+          <div class="card-head">
+            <div>
+              <p class="card-eyebrow">Comparativa anual</p>
+              <h2>Comparativa curs 25-26 vs 24-25</h2>
+            </div>
+            <p id="ytdComparisonRange" class="comparison-range visually-hidden" aria-hidden="true"></p>
+          </div>
+          <div class="comparison-summary">
+            <article class="comparison-metric">
+              <span>Any actual</span>
+              <strong id="ytdCurrentTotal">0</strong>
+            </article>
+            <article class="comparison-metric">
+              <span>Any anterior</span>
+              <strong id="ytdPreviousTotal">0</strong>
+            </article>
+          </div>
+          <div id="ytdGrowth" class="comparison-growth comparison-growth-neutral">
+            <span id="ytdGrowthArrow" class="comparison-growth-arrow" aria-hidden="true">↗</span>
+            <span id="ytdGrowthValue">0,0%</span>
+          </div>
+          <div id="ytdRobotChart" class="chart-surface chart-bars comparison-chart visually-hidden" aria-hidden="true"></div>
+        </section>
+
+      </section>
+    </main>
+
+    <section class="card details-card details-full">
+      <div class="card-head">
+        <div>
+          <p class="card-eyebrow">Control</p>
+          <h2>Dades detectades</h2>
+        </div>
+      </div>
+      <div class="details-grid">
+        <div>
+          <span class="detail-label">Files carregades</span>
+          <strong id="rowsLoaded">0</strong>
+        </div>
+        <div>
+          <span class="detail-label">&Uacute;ltima c&agrave;rrega</span>
+          <strong id="lastUpdated">-</strong>
+        </div>
+      </div>
+      <p id="schemaHint" class="schema-hint"></p>
+    </section>
+  </div>
+
+  <script src="app.js?v=20260316b"></script>
+</body>
+</html>
