@@ -383,7 +383,7 @@ function renderDashboard() {
   renderLegend(elements.educationLegend, educationBreakdown, metrics.deliveries);
   normalizeLegendLabels(elements.educationLegend);
   renderPieChart(elements.educationChart, educationBreakdown, metrics.deliveries, "pie");
-  renderPieChart(elements.seasonChart, seasonBreakdown, sumValues(seasonBreakdown), "donut");
+  renderSeasonComparison(seasonBreakdown);
   renderBarChart(elements.toolsChart, toolsBreakdown);
   renderAnnualComparison(annualComparison);
   renderInsights(metrics, educationBreakdown, toolsBreakdown);
@@ -668,6 +668,15 @@ function renderPieChart(container, data, total, mode) {
   const labelsMarkup = mode === "pie" ? labels.join("") : "";
 
   container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">${defs}<g${pieGroupClass}>${slices}${middleLabel}</g>${labelsMarkup}</svg>`;
+}
+
+function renderSeasonComparison(seasonBreakdown) {
+  if (state.filters.season !== "all") {
+    elements.seasonChart.innerHTML = `<div class="empty-state">La comparativa de temporades nom&eacute;s es mostra amb "Totes".</div>`;
+    return;
+  }
+
+  renderPieChart(elements.seasonChart, seasonBreakdown, sumValues(seasonBreakdown), "donut");
 }
 
 function renderBarChart(container, data) {
