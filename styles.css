@@ -205,6 +205,7 @@ select option {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 20px;
+  align-items: start;
 }
 
 .content-grid > * {
@@ -310,12 +311,12 @@ select option {
 }
 
 .chart-pie {
-  min-height: 460px;
+  min-height: 360px;
   padding: 18px;
 }
 
 .chart-donut {
-  min-height: 560px;
+  min-height: 360px;
   padding: 8px;
   background:
     radial-gradient(circle at center, rgba(105, 167, 255, 0.12), transparent 34%),
