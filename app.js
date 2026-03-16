@@ -570,8 +570,10 @@ function renderPieChart(container, data, total, mode) {
     return;
   }
 
-  const size = mode === "pie" ? 500 : 520;
-  const center = size / 2;
+  const width = mode === "pie" ? 500 : 520;
+  const height = mode === "pie" ? 420 : 420;
+  const centerX = width / 2;
+  const centerY = mode === "pie" ? 190 : 208;
   const radius = mode === "donut" ? 176 : 144;
   const innerRadius = mode === "donut" ? 78 : 0;
 
@@ -579,17 +581,17 @@ function renderPieChart(container, data, total, mode) {
     const color = getChartColor(data[0], 0);
     const circle = mode === "donut"
       ? `
-        <circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${color}" stroke-width="${radius - innerRadius}"></circle>
-        <circle cx="${center}" cy="${center}" r="${innerRadius - 2}" fill="rgba(12, 26, 41, 0.92)"></circle>
+        <circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="none" stroke="${color}" stroke-width="${radius - innerRadius}"></circle>
+        <circle cx="${centerX}" cy="${centerY}" r="${innerRadius - 2}" fill="rgba(12, 26, 41, 0.92)"></circle>
       `
-      : `<circle cx="${center}" cy="${center}" r="${radius}" fill="${color}"></circle>`;
+      : `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="${color}"></circle>`;
 
     const middleLabel = `
-      <text x="${center}" y="${center - 4}" text-anchor="middle" class="chart-label">100%</text>
-      <text x="${center}" y="${center + 18}" text-anchor="middle" class="chart-subtle">${escapeHtml(data[0].label)}</text>
+      <text x="${centerX}" y="${centerY - 4}" text-anchor="middle" class="chart-label">100%</text>
+      <text x="${centerX}" y="${centerY + 18}" text-anchor="middle" class="chart-subtle">${escapeHtml(data[0].label)}</text>
     `;
 
-    container.innerHTML = `<svg viewBox="0 0 ${size} ${size}" aria-hidden="true">${circle}${middleLabel}</svg>`;
+    container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">${circle}${middleLabel}</svg>`;
     return;
   }
 
@@ -598,15 +600,15 @@ function renderPieChart(container, data, total, mode) {
 
   const slices = data.map((item, index) => {
     const valueAngle = (item.value / total) * Math.PI * 2;
-    const path = describeArc(center, center, radius, innerRadius, angle, angle + valueAngle);
+    const path = describeArc(centerX, centerY, radius, innerRadius, angle, angle + valueAngle);
     const midAngle = angle + valueAngle / 2;
     const sliceColor = getChartColor(item, index);
     let label = "";
 
     if (mode === "donut") {
       const labelRadius = (radius + innerRadius) / 2;
-      const lx = center + Math.cos(midAngle) * labelRadius;
-      const ly = center + Math.sin(midAngle) * labelRadius;
+      const lx = centerX + Math.cos(midAngle) * labelRadius;
+      const ly = centerY + Math.sin(midAngle) * labelRadius;
       label = item.value / total >= 0.07
         ? `<text x="${lx}" y="${ly}" text-anchor="middle" class="chart-label">${formatPercent(item.value, total)}</text>`
         : "";
@@ -614,12 +616,12 @@ function renderPieChart(container, data, total, mode) {
       const anchorRadius = radius + 8;
       const lineRadius = radius + 26;
       const labelRadius = radius + 52;
-      const ax = center + Math.cos(midAngle) * anchorRadius;
-      const ay = center + Math.sin(midAngle) * anchorRadius;
-      const lx = center + Math.cos(midAngle) * lineRadius;
-      const ly = center + Math.sin(midAngle) * lineRadius;
-      const textX = center + Math.cos(midAngle) * labelRadius;
-      const textY = center + Math.sin(midAngle) * labelRadius;
+      const ax = centerX + Math.cos(midAngle) * anchorRadius;
+      const ay = centerY + Math.sin(midAngle) * anchorRadius;
+      const lx = centerX + Math.cos(midAngle) * lineRadius;
+      const ly = centerY + Math.sin(midAngle) * lineRadius;
+      const textX = centerX + Math.cos(midAngle) * labelRadius;
+      const textY = centerY + Math.sin(midAngle) * labelRadius;
       const isRight = Math.cos(midAngle) >= 0;
       const endX = textX + (isRight ? 10 : -10);
       const textAnchor = isRight ? "start" : "end";
@@ -639,8 +641,8 @@ function renderPieChart(container, data, total, mode) {
 
   const middleLabel = mode === "donut"
     ? `
-      <text x="${center}" y="${center - 4}" text-anchor="middle" class="chart-label">${formatNumber(total)}</text>
-      <text x="${center}" y="${center + 18}" text-anchor="middle" class="chart-subtle">total</text>
+      <text x="${centerX}" y="${centerY - 4}" text-anchor="middle" class="chart-label">${formatNumber(total)}</text>
+      <text x="${centerX}" y="${centerY + 18}" text-anchor="middle" class="chart-subtle">total</text>
     `
     : "";
 
@@ -663,7 +665,7 @@ function renderPieChart(container, data, total, mode) {
   const pieGroupClass = mode === "pie" ? ` class="pie-chart-group"` : ` class="donut-chart-group"`;
   const labelsMarkup = mode === "pie" ? labels.join("") : "";
 
-  container.innerHTML = `<svg viewBox="0 0 ${size} ${size}" aria-hidden="true">${defs}<g${pieGroupClass}>${slices}${middleLabel}</g>${labelsMarkup}</svg>`;
+  container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">${defs}<g${pieGroupClass}>${slices}${middleLabel}</g>${labelsMarkup}</svg>`;
 }
 
 function renderBarChart(container, data) {
