@@ -466,7 +466,7 @@ function aggregateTools(rows) {
 
 function computeAnnualComparison() {
   const now = new Date();
-  const previousCutoff = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate(), 23, 59, 59, 999);
+  const previousCutoff = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate() - 1, 23, 59, 59, 999);
   const currentTotal = state.rows.length;
   let previousTotal = 0;
 
