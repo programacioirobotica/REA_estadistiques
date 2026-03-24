@@ -678,8 +678,23 @@ function renderSeasonComparison(seasonBreakdown) {
     return;
   }
 
-  renderLegend(elements.seasonLegend, seasonBreakdown, sumValues(seasonBreakdown));
-  renderPieChart(elements.seasonChart, seasonBreakdown, sumValues(seasonBreakdown), "donut");
+  const seasonColors = {
+    T1: "#ffb85c",
+    T2: "#69a7ff",
+  };
+
+  const orderedSeasonBreakdown = [...seasonBreakdown]
+    .sort((a, b) => {
+      const order = ["T1", "T2"];
+      return order.indexOf(String(a.label || "").trim()) - order.indexOf(String(b.label || "").trim());
+    })
+    .map((item) => ({
+      ...item,
+      color: seasonColors[String(item.label || "").trim()] || getChartColor(item, 0),
+    }));
+
+  renderLegend(elements.seasonLegend, orderedSeasonBreakdown, sumValues(orderedSeasonBreakdown));
+  renderPieChart(elements.seasonChart, orderedSeasonBreakdown, sumValues(orderedSeasonBreakdown), "donut");
 }
 
 function renderBarChart(container, data) {
@@ -976,6 +991,7 @@ function uniqueList(values) {
 }
 
 function getChartColor(item, index) {
+  if (item && item.color) return item.color;
   return item && item.label === "Altres" ? OTHERS_COLOR : COLORS[index % COLORS.length];
 }
 
