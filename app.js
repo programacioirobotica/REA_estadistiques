@@ -555,7 +555,7 @@ function renderLegend(container, data, total) {
       <div class="legend-item">
         <div class="legend-label">
           <span class="legend-dot" style="background:${getChartColor(item, index)}"></span>
-          <span class="legend-name">${escapeHtml(getDisplayLabel(item.label))}</span>
+          <span class="legend-name">${escapeHtml(item.displayLabel || getDisplayLabel(item.label))}</span>
         </div>
         <span class="legend-value">${formatPercent(item.value, total)}</span>
       </div>
@@ -691,6 +691,7 @@ function renderSeasonComparison(seasonBreakdown) {
     .map((item) => ({
       ...item,
       label: getSeasonLegendLabel(item.label),
+      displayLabel: getSeasonLegendLabel(item.label),
       color: getSeasonColor(item.label),
     }));
 
