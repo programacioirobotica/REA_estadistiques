@@ -678,19 +678,20 @@ function renderSeasonComparison(seasonBreakdown) {
     return;
   }
 
-  const seasonColors = {
-    T1: "#ffb85c",
-    T2: "#69a7ff",
-  };
+  const seasonOrder = ["t1", "t2"];
 
   const orderedSeasonBreakdown = [...seasonBreakdown]
     .sort((a, b) => {
-      const order = ["T1", "T2"];
-      return order.indexOf(String(a.label || "").trim()) - order.indexOf(String(b.label || "").trim());
+      const aIndex = seasonOrder.indexOf(getSeasonKey(a.label));
+      const bIndex = seasonOrder.indexOf(getSeasonKey(b.label));
+      const safeAIndex = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
+      const safeBIndex = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
+      return safeAIndex - safeBIndex;
     })
     .map((item) => ({
       ...item,
-      color: seasonColors[String(item.label || "").trim()] || getChartColor(item, 0),
+      label: getSeasonLegendLabel(item.label),
+      color: getSeasonColor(item.label),
     }));
 
   renderLegend(elements.seasonLegend, orderedSeasonBreakdown, sumValues(orderedSeasonBreakdown));
@@ -993,6 +994,27 @@ function uniqueList(values) {
 function getChartColor(item, index) {
   if (item && item.color) return item.color;
   return item && item.label === "Altres" ? OTHERS_COLOR : COLORS[index % COLORS.length];
+}
+
+function getSeasonKey(label) {
+  const normalizedLabel = normalize(label);
+  if (normalizedLabel.includes("t1")) return "t1";
+  if (normalizedLabel.includes("t2")) return "t2";
+  return normalizedLabel;
+}
+
+function getSeasonColor(label) {
+  const seasonKey = getSeasonKey(label);
+  if (seasonKey === "t1") return "#ffb85c";
+  if (seasonKey === "t2") return "#69a7ff";
+  return COLORS[0];
+}
+
+function getSeasonLegendLabel(label) {
+  const seasonKey = getSeasonKey(label);
+  if (seasonKey === "t1") return "T1";
+  if (seasonKey === "t2") return "T2";
+  return String(label || "").trim();
 }
 
 function lightenColor(hexColor, amount) {
