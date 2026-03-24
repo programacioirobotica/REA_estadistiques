@@ -1001,6 +1001,8 @@ function getSeasonKey(label) {
   const normalizedLabel = normalize(label);
   if (normalizedLabel.includes("t1")) return "t1";
   if (normalizedLabel.includes("t2")) return "t2";
+  if (normalizedLabel === "1") return "t1";
+  if (normalizedLabel === "2") return "t2";
   return normalizedLabel;
 }
 
