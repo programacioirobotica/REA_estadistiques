@@ -295,6 +295,21 @@ select option {
   grid-template-columns: minmax(220px, 1fr) 1fr;
 }
 
+.chart-card .chart-layout.compact {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.chart-card .chart-layout.compact .chart-surface {
+  width: 100%;
+  max-width: 420px;
+}
+
+.chart-card .chart-layout.compact .legend-list {
+  width: 100%;
+  max-width: 420px;
+}
+
 .chart-layout > * {
   min-width: 0;
 }
