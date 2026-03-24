@@ -70,6 +70,7 @@ const elements = {
   educationChart: document.getElementById("educationChart"),
   educationLegend: document.getElementById("educationLegend"),
   seasonChart: document.getElementById("seasonChart"),
+  seasonLegend: document.getElementById("seasonLegend"),
   toolsChart: document.getElementById("toolsChart"),
   ytdCurrentTotal: document.getElementById("ytdCurrentTotal"),
   ytdPreviousTotal: document.getElementById("ytdPreviousTotal"),
@@ -466,7 +467,7 @@ function aggregateTools(rows) {
 
 function computeAnnualComparison() {
   const now = new Date();
-  const previousCutoff = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate() - 1, 23, 59, 59, 999);
+  const previousCutoff = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate(), 23, 59, 59, 999);
   const currentTotal = state.rows.length;
   let previousTotal = 0;
 
@@ -673,9 +674,11 @@ function renderPieChart(container, data, total, mode) {
 function renderSeasonComparison(seasonBreakdown) {
   if (state.filters.season !== "all") {
     elements.seasonChart.innerHTML = `<div class="empty-state">La comparativa de temporades nom&eacute;s es mostra amb "Totes".</div>`;
+    elements.seasonLegend.innerHTML = "";
     return;
   }
 
+  renderLegend(elements.seasonLegend, seasonBreakdown, sumValues(seasonBreakdown));
   renderPieChart(elements.seasonChart, seasonBreakdown, sumValues(seasonBreakdown), "donut");
 }
 
@@ -826,6 +829,7 @@ function renderErrorState(message) {
     elements.toolsChart,
     elements.ytdRobotChart,
     elements.educationLegend,
+    elements.seasonLegend,
   ].forEach((element) => {
     element.innerHTML = `<div class="empty-state">${message}</div>`;
   });
@@ -1075,4 +1079,3 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
