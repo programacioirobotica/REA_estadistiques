@@ -462,6 +462,7 @@ function aggregateTools(rows) {
     .map(([label, value]) => ({ label, value }))
     .filter((item) => item.value > 0)
     .sort((a, b) => b.value - a.value)
+    .slice(0, 11);
 }
 
 function computeAnnualComparison() {
